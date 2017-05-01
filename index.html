@@ -42,6 +42,7 @@
     var maxWidth = 100;
     var minWidth = 0;
     var height = -300;
+    var gravity = new THREE.Vector3(0, 0.2, 0);
 
     //Animation
     var deltaTime = 1;
@@ -138,13 +139,14 @@
       //Rotate on the x and y axis, TEST
       //mesh.rotation.x += 0.01 * deltaTime;
       //mesh.rotation.y += 0.01 * deltaTime;
-      //firework.update(); //moves Object
-      //firework.getPos().x +=10;
+
+      firework.update(); //moves Object
+
+
       //RENDER CALL
       render();
       requestAnimationFrame(animate);
     }
-
 
     //Draw Function
     function render()

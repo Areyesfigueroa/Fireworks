@@ -1,11 +1,12 @@
 
 class Particle
 {
+
   constructor(posX = 0, posY = 0, posZ = 0, scaleX = 20, scaleY = 20, scaleZ = 20)
   {
     //Vector3() gets Initialized as (0,0,0)
     this.pos = new THREE.Vector3(posX, posY, posZ);
-    this.vel = new THREE.Vector3(0, -4, 0);
+    this.vel = new THREE.Vector3(0, 4, 0);
     this.acc = new THREE.Vector3(0,0,0);
 
     //DRAWING
@@ -31,16 +32,12 @@ class Particle
   update()
   {
     //Vector addition.
-    //console.log("Vector Before: " , this.pos);
     this.vel.add(this.acc);
-    //console.log("Before: ", this.pos);
+    console.log("Position: ", this.mesh.position.add(this.vel)); //set new position.
 
-    this.pos.add(this.vel);
-    //console.log("After: ", this.pos);
+    //Vector multiplication
+    this.acc.multiplyScalar(0);
 
-    //console.log("Position: ", this.mesh.position.add(this.pos));
-
-    this.acc.multiply(0);
   }
 
   //returns mesh
