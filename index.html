@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>threejs - basic</title>
+  <title>three.js canvas - particles - sprites</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable = no, minimum-scale=1.0, maximum-scale=1.0">
 
   <style>
     body
     {
-      margin: 0;
+      background-color: #000000;
+      margin: 0px;
       overflow: hidden;
     }
 
     canvas
     {
-      background: red;
+      color: #0078ff;
     }
 
   </style>
@@ -24,87 +27,95 @@
 
   <!--Loading Three.js Library-->
   <script src="three.js"></script>
+  <script src="particle.js"></script>
 
   <!--Creating Renderer. NOTE: renderer helps draw everything into our canvas-->
   <script>
-    //In JavaScript object = {variable: definition}.In C# object = new object(), object.variable = definition.
-    var renderer = new THREE.WebGLRenderer({canvas: document.getElementById("myCanvas"), antialias: true});
 
-    //renderer properties.
-    renderer.setClearColor(191970); //Midnight Blue color
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    //global variables
+    var camera, scene, renderer;
+    var ambientLight, pointLight;
+    var geometry, material, mesh;
 
-    //CAMERA
-    //params(fieldOfView, aspect ratio, clipping range)
-    var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 3000);
+    //Init Call
+    init();
 
-    //SCENE
-    //Create a new instance of THREE.Scene.
-    var scene = new THREE.Scene();
+    function init()
+    {
+      //RENDERER
+      //Renderer Draws onto the canvas.
+      renderer = new THREE.WebGLRenderer({canvas: document.getElementById("myCanvas"), antialias: true});
 
+      //renderer properties.
+      renderer.setClearColor(000000); //Black
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
 
-    //LIGHTS
-    //params (color, intensity)
-    var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);  //Add ambientLight to the scene
+      //CAMERA
+      //params(fieldOfView, aspect ratio, clipping range)
+      camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 3000);
 
-    var pointLight = new THREE.PointLight(0xffffff, 0.5);
-    scene.add(pointLight);  //Add point light to the scene.
+      //SCENE
+      //Create a new instance of THREE.Scene.
+      scene = new THREE.Scene();
 
+      //LIGHTS
+      //params (color, intensity)
+      ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);  //Add ambientLight to the scene
 
-
-    //GEOMETRY
-    // Method 1:
-    //params(x = 100, y = 100, z = 100)
-    //var geometry = new THREE.BoxGeometry(100, 100, 100);
-
-    /*//Method 2:
-    var geometry = new THREE.Geometry();
-    //add vertices by pushing them into the vertices array.
-    geometry.vertices.push(
-      new THREE.Vector3(-10, 10, 0),
-      new THREE.Vector3(-10, -10, 0),
-      new THREE.Vector3(10, -10, 0)
-    );
-    //create the faces by pushing them into the faces array.
-    //params(x, y, z)
-    geometry.faces.push(new THREE.Face3(0, 1, 2));*/
-
-    /*//Method 3: Static geometry. Saves on performance
-    var geometry = new THREE.BufferGeometry();
-    var vertices = new Float32Array([
-      -10.0, -10.0, 0.0,
-      10.0, -10.0, 0.0,
-      10.0, 10.0, 0.0
-    ]);
-    //add its position
-    geometry.addAttribute("position", new THREE.BufferAttribute(vertices, 3));*/
-
-
-    //DIFFERENT TYPES OF GEOMETRY
-    //params(width, height)
-    //var geometry = new THREE.PlaneGeometry(100, 100);
-    //params(radius, subdivisionWidth(optional), subdivisionHeight(optional))
-    //var geometry = new THREE.SphereGeometry(50, 50, 50);
-    //params(x, y, z)
-    //var geometry = new THREE.CircleGeometry(50, 50, 50);
-    //params(radius, subdivisionWidth, subdivisionHeight)
-    //var geometry = new THREE.ConeGeometry(50, 50, 50);
-    // And many more....
-
-    var geometry = new THREE.BoxGeometry(50,50,50);
+      pointLight = new THREE.PointLight(0xffffff, 0.5);
+      scene.add(pointLight);  //Add point light to the scene.
 
 
 
-    //params(Object); Object properties must include: {color}
-    var material = new THREE.MeshLambertMaterial({color: 0xF3FFE2});
-    var mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(0,0,-1000); //Camera and Mesh are on top of each other by default.
+      //GEOMETRY TESTING
+      geometry = new THREE.BoxGeometry(50,50,50);
+      material = new THREE.MeshLambertMaterial({color: 0xF3FFE2});//params(Object); Object properties must include: {color}
+      mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(0,0,-1000); //Camera and Mesh are on top of each other by default.
+      scene.add(mesh);//Add our mesh to the scene
 
-    //Add our mesh to the scene
-    scene.add(mesh);
+      //REFERENCES
+      /* Method 1:
+      params(x = 100, y = 100, z = 100)
+      var geometry = new THREE.BoxGeometry(100, 100, 100);*/
 
+      /*Method 2:
+      var geometry = new THREE.Geometry();
+      //add vertices by pushing them into the vertices array.
+      geometry.vertices.push(
+        new THREE.Vector3(-10, 10, 0),
+        new THREE.Vector3(-10, -10, 0),
+        new THREE.Vector3(10, -10, 0)
+      );
+      //create the faces by pushing them into the faces array.
+      //params(x, y, z)
+      geometry.faces.push(new THREE.Face3(0, 1, 2));*/
+
+      /*//Method 3: Static geometry. Saves on performance
+      var geometry = new THREE.BufferGeometry();
+      var vertices = new Float32Array([
+        -10.0, -10.0, 0.0,
+        10.0, -10.0, 0.0,
+        10.0, 10.0, 0.0
+      ]);
+      //add its position
+      geometry.addAttribute("position", new THREE.BufferAttribute(vertices, 3));
+
+
+      //DIFFERENT TYPES OF GEOMETRY
+      //params(width, height)
+      //var geometry = new THREE.PlaneGeometry(100, 100);
+      //params(radius, subdivisionWidth(optional), subdivisionHeight(optional))
+      //var geometry = new THREE.SphereGeometry(50, 50, 50);
+      //params(x, y, z)
+      //var geometry = new THREE.CircleGeometry(50, 50, 50);
+      //params(radius, subdivisionWidth, subdivisionHeight)
+      //var geometry = new THREsE.ConeGeometry(50, 50, 50);
+      // And many more....*/
+
+    }
 
     //RENDER Call
     render();
@@ -116,7 +127,7 @@
       mesh.rotation.y += 0.01;
 
       renderer.render(scene, camera);
-      requestAnimationFrame(render); //ready to update animation.
+      requestAnimationFrame(render); //Updates the renderer.
     }
 
   </script>
