@@ -1,12 +1,24 @@
 
 class Particle
 {
-  constructor(x, y, z)
+  constructor(posX = 0, posY = 0, posZ = 0, scaleX = 20, scaleY = 20, scaleZ = 20)
   {
     //Vector3() gets Initialized as (0,0,0)
-    this.pos = new THREE.Vector3(x, y, z);
-    this.vel = new THREE.Vector3(0, 0, 0);
+    this.pos = new THREE.Vector3(posX, posY, posZ);
+    this.vel = new THREE.Vector3(0, -4, 0);
     this.acc = new THREE.Vector3(0,0,0);
+
+    //DRAWING
+    //Draw SphereGeometry
+    this.geometry = new THREE.SphereGeometry(scaleX, scaleY, scaleZ); //Default
+
+    //Create material
+    this.material = new THREE.MeshLambertMaterial({color: 0xF3FFE2});
+
+    //Create mesh
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z); //set initial position.
+    console.log(this.mesh.position);
   }
 
   //force function
@@ -19,51 +31,39 @@ class Particle
   update()
   {
     //Vector addition.
+    //console.log("Vector Before: " , this.pos);
     this.vel.add(this.acc);
+    //console.log("Before: ", this.pos);
+
     this.pos.add(this.vel);
+    //console.log("After: ", this.pos);
+
+    //console.log("Position: ", this.mesh.position.add(this.pos));
 
     this.acc.multiply(0);
   }
 
+  //returns mesh
   getMesh()
   {
-    //Draw SphereGeometry
-    var geometry = new THREE.SphereGeometry(this.x, this.y, this.z);
+    return this.mesh;
+  }
 
-    //Create material
-    var material = new THREE.MeshLambertMaterial({color: 0xF3FFE2});
+  //getMeshPos
+  getPos()
+  {
+    return this.mesh.position;
+  }
 
-    //Create mesh
-    var mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(0,0,0-1000);
+  //setsMeshPos
+  setPos(x = 0, y = 0, z = -5000)
+  {
+    this.mesh.position.set(x, y, z);
+  }
 
-    //add to scene. AKA return the mesh.
-    return mesh;
-
+  //setsMeshPos using a passed Vector3
+  setVectorPos(position)
+  {
+    this.mesh.position.set(position);
   }
 }
-
-/*
-Particle(x, y, z)
-{
-  //Vector3() gets Initialized as (0,0,0)
-  var pos = new THREE.Vector3(x, y, z);
-  var vel = new THREE.Vector3(0, 0, 0);
-  var acc = new THREE.Vector3(0,0,0);
-
-
-  //force function
-  var applyForce = function(force)
-  {
-    acc.add(force);
-  }
-
-  //update function
-  var update = function()
-  {
-    //Vector addition.
-    this.vel.add(this.acc);
-    this.pos.add(this.vel);
-  }
-
-}*/

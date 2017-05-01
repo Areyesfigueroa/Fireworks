@@ -37,8 +37,18 @@
     var ambientLight, pointLight;
     var geometry, material, mesh;
 
+    //Particles, 2D
+    var firework;
+    var maxWidth = 100;
+    var minWidth = 0;
+    var height = -300;
+
+    //Animation
+    var deltaTime = 1;
+
     //Init Call
     init();
+    animate();
 
     function init()
     {
@@ -73,8 +83,14 @@
       geometry = new THREE.BoxGeometry(50,50,50);
       material = new THREE.MeshLambertMaterial({color: 0xF3FFE2});//params(Object); Object properties must include: {color}
       mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(0,0,-1000); //Camera and Mesh are on top of each other by default.
-      scene.add(mesh);//Add our mesh to the scene
+      mesh.position.set(0,0,-3000); //Camera and Mesh are on top of each other by default.
+      //scene.add(mesh);//Add our mesh to the scene
+
+
+      //PARTICLE
+      var randomPosX = Math.floor(Math.random() * maxWidth) + minWidth;
+      firework = new Particle(randomPosX, height, -1000); //width is a random number between two values.
+      scene.add(firework.getMesh()); //add mesh to the scene.
 
       //REFERENCES
       /* Method 1:
@@ -117,17 +133,25 @@
 
     }
 
-    //RENDER Call
-    render();
+    function animate()
+    {
+      //Rotate on the x and y axis, TEST
+      //mesh.rotation.x += 0.01 * deltaTime;
+      //mesh.rotation.y += 0.01 * deltaTime;
+      //firework.update(); //moves Object
+      //firework.getPos().x +=10;
+      //RENDER CALL
+      render();
+      requestAnimationFrame(animate);
+    }
 
+
+    //Draw Function
     function render()
     {
-      //Rotate on the x and y axis
-      mesh.rotation.x += 0.01;
-      mesh.rotation.y += 0.01;
-
+      //Render whole scene.
       renderer.render(scene, camera);
-      requestAnimationFrame(render); //Updates the renderer.
+      //requestAnimationFrame(render); //Updates the renderer.
     }
 
   </script>
