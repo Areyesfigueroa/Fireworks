@@ -130,16 +130,9 @@ class Particle
       //If it is not the seed firework
       if (!this.firework)
       {
-        //strokeWeight(2);
-        //stroke(255, this.lifespan);
-        //stroke(this.color, 255, 255);
         this.mesh.material.opacity = this.lifespan;
-
       }
       else {
-        //strokeWeight(4);
-        //stroke(255);
-        //stroke(this.color, 255, 255);
         this.mesh.material.opacity = 1;
       }
 
