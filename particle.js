@@ -83,6 +83,18 @@ class Particle
     this.acc.multiplyScalar(0);
   }
 
+  done()
+  {
+    if(this.lifespan <= 0)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
   //Deprecated
   getMesh()
   {

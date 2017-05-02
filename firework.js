@@ -34,14 +34,33 @@ class Firework
       }
     }
 
-    for(var i = 0; i < this.particles.length; i++)
+    //Better to go backwards.
+    for(var i = this.particles.length - 1; i >= 0; i--)
     {
       //console.log("Apply New Particle physics");
       //Balance between Gravity and Velocity. To get the correct effect
       this.particles[i].applyForce(this.gravity);
       this.particles[i].update();
+
+      if(this.particles[i].done())
+      {
+        this.particles[i].remove();
+        this.particles.splice(i, 1);
+      }
     }
 
+  }
+
+  done()
+  {
+    if(this.exploded && this.particles.lenght == 0)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   explode()

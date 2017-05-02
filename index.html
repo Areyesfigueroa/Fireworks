@@ -137,11 +137,19 @@
         fireworks.push(new Firework()); //Array of particles.
       }
 
-      for(var i= 0; i < fireworks.length; i++)
+      for(var i= fireworks.length - 1; i >= 0; i--)
       {
         fireworks[i].update();
         fireworks[i].show();
+
+        //if firework is done
+        if(fireworks[i].done())
+        {
+          fireworks.splice(i, 1);
+        }
       }
+
+      console.log(fireworks.length);
 
       //RENDER CALL
       render();
