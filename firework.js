@@ -4,7 +4,7 @@ class Firework
   {
     //PARTICLE VARIABLES
     this.color = Math.random() * 0xffffff; //generate random color
-    this.explosionAmmount = 30;
+    this.explosionAmmount = Math.floor(Math.random()*100) + 30; //generate random ammount fom 30 to 60
     this.maxWidth = 300;
     this.minWidth = -150; //origin.
     this.height = -300;
@@ -12,7 +12,7 @@ class Firework
 
     //EXPLOSION VARIABLES
     this.exploded = false; //check if object exploded.
-    this.particles = [];
+    this.particles = []; //hold our particles
 
     //PARTICLE
     var randomPosX = Math.floor(Math.random() * this.maxWidth) + this.minWidth;

@@ -4,7 +4,7 @@ class Particle
   //<Params>Scene</Params> Required
   //<Params>x, y, z</Params> Optional, Vector position of the particle.
   //<Params>scaleX, scaleY, scaleZ</Params> Optional, Size of the particle.
-  constructor(scene, firework = false, color, posX = 0, posY = 0, posZ = 0, scaleX = 2, scaleY = 2, scaleZ = 0)
+  constructor(scene, firework = false, color, posX = 0, posY = 0, posZ = 0, scaleX = 2, scaleY = 2, scaleZ = 2)
   {
     //POSITION, VELOCITY, ACCELERATION
     this.pos = new THREE.Vector3(posX, posY, posZ); //sets origin position
@@ -18,6 +18,9 @@ class Particle
     //transparency
     this.lifespan = 1;
 
+    //slow down explosion
+    this.explosionLenght = (0.85);
+
     if(this.firework)
     {
       //IF FIREWORK HAS NOT EXPLODED.
@@ -30,21 +33,21 @@ class Particle
       //IF FIREWORK EXPLODES.
       //Randomize the direction of your vectors. So that particles shoot everywhere.
 
-      var xDir = Math.floor(Math.random()*2) + 0; // this will get a number between 0 and 1;
+      var xDir = (Math.random()*2); // this will get a number between 0 and 1;
       xDir *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
 
-      var yDir = Math.floor(Math.random()*2) + 0; // this will get a number between 0 and 1;
+      var yDir = (Math.random()*2); // this will get a number between 0 and 1;
       yDir *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
 
-      var zDir = Math.floor(Math.random()*2) + 0; // this will get a number between 0 and 1;
+      var zDir = (Math.random()*2); // this will get a number between 0 and 1;
       zDir *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
 
       var force = Math.floor(Math.random() * 8) + 1; //Balance between Gravity and Velocity. To get the correct effect
 
       //Plug In New Random Directions to the new Vector3 velocity.
-      this.vel = new THREE.Vector3(xDir, yDir ,0); //velocity, 2D for now.
+      this.vel = new THREE.Vector3(xDir, yDir ,xDir); //velocity, 2D for now.
       this.vel.multiplyScalar(force);
-      //console.log(xDir, yDir, zDir);
+      console.log(xDir, yDir, zDir);
     }
     this.acc = new THREE.Vector3(0,0,0); //acceleration
 
@@ -55,7 +58,7 @@ class Particle
 
     //Create material
     this.material = new THREE.MeshLambertMaterial({color: this.color, transparent: true});
-
+    this.material.setHex
     //Create mesh
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z); //set initial position.
@@ -74,9 +77,11 @@ class Particle
     //If Not A Seed Firework.
     if(!this.firework)
     {
+      console.log(this.explosionLenght);
       this.vel.multiplyScalar(0.85); //Slows down the explosion
       this.lifespan -= .01; //Start reducing the lifespan of particles.
     }
+
     //Vector addition.
     this.vel.add(this.acc);
     this.mesh.position.add(this.vel); //set new position.
