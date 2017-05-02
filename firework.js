@@ -48,6 +48,8 @@ class Firework
   explode()
   {
     //console.log("BOOM");
+    this.firework.remove();
+
     for(var i = 0; i < 10; i++)
     {
       //Create Particle Instance at the current firework position.
@@ -59,6 +61,7 @@ class Firework
 
   show()
   {
+    //If it has not exploded
     if(!this.exploded)
     {
       this.firework.show(); //add to scene

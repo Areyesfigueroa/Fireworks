@@ -107,4 +107,13 @@ class Particle
       //console.log("NULL PARTICLE")
     }
   }
+
+  //Remove the object from the scene.
+  remove()
+  {
+    if(this.mesh != null)
+    {
+      scene.remove(this.mesh);
+    }
+  }
 }
