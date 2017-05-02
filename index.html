@@ -28,6 +28,7 @@
   <!--Loading Three.js Library-->
   <script src="three.js"></script>
   <script src="particle.js"></script>
+  <script src="firework.js"></script>
 
   <!--Creating Renderer. NOTE: renderer helps draw everything into our canvas-->
   <script>
@@ -38,11 +39,8 @@
     var geometry, material, mesh;
 
     //Particles, 2D
-    var firework;
-    var maxWidth = 100;
-    var minWidth = 0;
-    var height = -300;
-    var gravity = new THREE.Vector3(0, 0.2, 0);
+    var fireworks = []; //make an array.
+
 
     //Animation
     var deltaTime = 1;
@@ -87,18 +85,14 @@
       mesh.position.set(0,0,-3000); //Camera and Mesh are on top of each other by default.
       //scene.add(mesh);//Add our mesh to the scene
 
+      //console.log(new Firework().maxWidth);
 
-      //PARTICLE
-      var randomPosX = Math.floor(Math.random() * maxWidth) + minWidth;
-      firework = new Particle(randomPosX, height, -1000); //width is a random number between two values.
-      scene.add(firework.getMesh()); //add mesh to the scene.
-
-      //REFERENCES
-      /* Method 1:
+      /*REFERENCES
+       Method 1:
       params(x = 100, y = 100, z = 100)
-      var geometry = new THREE.BoxGeometry(100, 100, 100);*/
+      var geometry = new THREE.BoxGeometry(100, 100, 100);
 
-      /*Method 2:
+      Method 2:
       var geometry = new THREE.Geometry();
       //add vertices by pushing them into the vertices array.
       geometry.vertices.push(
@@ -108,9 +102,9 @@
       );
       //create the faces by pushing them into the faces array.
       //params(x, y, z)
-      geometry.faces.push(new THREE.Face3(0, 1, 2));*/
+      geometry.faces.push(new THREE.Face3(0, 1, 2));
 
-      /*//Method 3: Static geometry. Saves on performance
+      Method 3: Static geometry. Saves on performance
       var geometry = new THREE.BufferGeometry();
       var vertices = new Float32Array([
         -10.0, -10.0, 0.0,
@@ -130,18 +124,24 @@
       //var geometry = new THREE.CircleGeometry(50, 50, 50);
       //params(radius, subdivisionWidth, subdivisionHeight)
       //var geometry = new THREsE.ConeGeometry(50, 50, 50);
-      // And many more....*/
-
+      // And many more....
+      */
     }
 
     function animate()
     {
-      //Rotate on the x and y axis, TEST
-      //mesh.rotation.x += 0.01 * deltaTime;
-      //mesh.rotation.y += 0.01 * deltaTime;
+      //If Random number between 0 and 1 is < 0.1 -> 10% chance of making a firework.
+      if(Math.random() * 1 < 0.1)
+      {
+        //PARTICLE
+        fireworks.push(new Firework()); //Array of particles.
+      }
 
-      firework.update(); //moves Object
-
+      for(var i= 0; i < fireworks.length; i++)
+      {
+        fireworks[i].update();
+        fireworks[i].show();
+      }
 
       //RENDER CALL
       render();

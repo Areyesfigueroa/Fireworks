@@ -1,13 +1,18 @@
 
 class Particle
 {
-
-  constructor(posX = 0, posY = 0, posZ = 0, scaleX = 20, scaleY = 20, scaleZ = 20)
+  //<Params>Scene</Params> Required
+  //<Params>x, y, z</Params> Optional, Vector position of the particle.
+  //<Params>scaleX, scaleY, scaleZ</Params> Optional, Size of the particle.
+  constructor(scene, posX = 0, posY = 0, posZ = 0, scaleX = 10, scaleY = 10, scaleZ = 10)
   {
     //Vector3() gets Initialized as (0,0,0)
-    this.pos = new THREE.Vector3(posX, posY, posZ);
-    this.vel = new THREE.Vector3(0, 4, 0);
-    this.acc = new THREE.Vector3(0,0,0);
+    this.pos = new THREE.Vector3(posX, posY, posZ); //sets origin position
+
+    var randomVel = Math.floor(Math.random() * 12) + 5; //randomize velocity vector.
+
+    this.vel = new THREE.Vector3(0, randomVel, 0); //velocity
+    this.acc = new THREE.Vector3(0,0,0); //acceleration
 
     //DRAWING
     //Draw SphereGeometry
@@ -19,13 +24,14 @@ class Particle
     //Create mesh
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z); //set initial position.
+
     console.log(this.mesh.position);
   }
 
   //force function
   applyForce(force)
   {
-    acc.add(force);
+    this.acc.add(force);
   }
 
   //update function
@@ -37,10 +43,11 @@ class Particle
 
     //Vector multiplication
     this.acc.multiplyScalar(0);
+    console.log(this.acc);
 
   }
 
-  //returns mesh
+  //Deprecated
   getMesh()
   {
     return this.mesh;
@@ -62,5 +69,11 @@ class Particle
   setVectorPos(position)
   {
     this.mesh.position.set(position);
+  }
+
+  //Add the object to the scene.
+  show()
+  {
+    scene.add(this.mesh);
   }
 }
