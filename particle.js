@@ -4,13 +4,16 @@ class Particle
   //<Params>Scene</Params> Required
   //<Params>x, y, z</Params> Optional, Vector position of the particle.
   //<Params>scaleX, scaleY, scaleZ</Params> Optional, Size of the particle.
-  constructor(scene, firework = false, posX = 0, posY = 0, posZ = 0, scaleX = 5, scaleY = 5, scaleZ = 0)
+  constructor(scene, firework = false, color, posX = 0, posY = 0, posZ = 0, scaleX = 2, scaleY = 2, scaleZ = 0)
   {
     //POSITION, VELOCITY, ACCELERATION
     this.pos = new THREE.Vector3(posX, posY, posZ); //sets origin position
 
     //Keep a ref to firework bool to know if the firework exploded.
     this.firework = firework;
+
+    //Get Color value
+    this.color = color;
 
     //transparency
     this.lifespan = 1;
@@ -36,7 +39,7 @@ class Particle
       var zDir = Math.floor(Math.random()*2) + 0; // this will get a number between 0 and 1;
       zDir *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
 
-      var force = Math.floor(Math.random() * 7) + 1; //Balance between Gravity and Velocity. To get the correct effect
+      var force = Math.floor(Math.random() * 8) + 1; //Balance between Gravity and Velocity. To get the correct effect
 
       //Plug In New Random Directions to the new Vector3 velocity.
       this.vel = new THREE.Vector3(xDir, yDir ,0); //velocity, 2D for now.
@@ -51,7 +54,7 @@ class Particle
     this.geometry = new THREE.SphereGeometry(scaleX, scaleY, scaleZ); //Default
 
     //Create material
-    this.material = new THREE.MeshLambertMaterial({color: 0xF3FFE2, transparent: true});
+    this.material = new THREE.MeshLambertMaterial({color: this.color, transparent: true});
 
     //Create mesh
     this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -129,13 +132,14 @@ class Particle
       {
         //strokeWeight(2);
         //stroke(255, this.lifespan);
-
+        //stroke(this.color, 255, 255);
         this.mesh.material.opacity = this.lifespan;
 
       }
       else {
         //strokeWeight(4);
         //stroke(255);
+        //stroke(this.color, 255, 255);
         this.mesh.material.opacity = 1;
       }
 

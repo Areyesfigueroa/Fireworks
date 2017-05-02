@@ -3,6 +3,7 @@ class Firework
   constructor(scene)
   {
     //PARTICLE VARIABLES
+    this.explosionAmmount = 30;
     this.maxWidth = 300;
     this.minWidth = -150; //origin.
     this.height = -300;
@@ -14,7 +15,6 @@ class Firework
 
     //PARTICLE
     var randomPosX = Math.floor(Math.random() * this.maxWidth) + this.minWidth;
-    this.firework = new Particle(scene, true, randomPosX, this.height, -1000);
   }
 
   update()
@@ -48,7 +48,6 @@ class Firework
         this.particles.splice(i, 1);
       }
     }
-
   }
 
   done()
@@ -68,10 +67,10 @@ class Firework
     //console.log("BOOM");
     this.firework.remove();
 
-    for(var i = 0; i < 10; i++)
+    //Create Particle Explosion!!!
+    for(var i = 0; i < this.explosionAmmount; i++)
     {
       //Create Particle Instance at the current firework position.
-      var p = new Particle(scene, false, this.firework.pos.x, this.firework.pos.y, this.firework.pos.z);
       this.particles.push(p);
     }
   }
