@@ -4,15 +4,40 @@ class Particle
   //<Params>Scene</Params> Required
   //<Params>x, y, z</Params> Optional, Vector position of the particle.
   //<Params>scaleX, scaleY, scaleZ</Params> Optional, Size of the particle.
-  constructor(scene, posX = 0, posY = 0, posZ = 0, scaleX = 10, scaleY = 10, scaleZ = 0)
+  constructor(scene, firework = false, posX = 0, posY = 0, posZ = 0, scaleX = 5, scaleY = 5, scaleZ = 0)
   {
-    //Vector3() gets Initialized as (0,0,0)
+    //POSITION, VELOCITY, ACCELERATION
     this.pos = new THREE.Vector3(posX, posY, posZ); //sets origin position
 
-    var randomVel = Math.floor(Math.random() * 12) + 5; //randomize velocity vector.
+    var randomVel = Math.floor(Math.random() * 10) + 5; //randomize velocity vector.
+    if(firework)
+    {
+      //IF FIREWORK HAS NOT EXPLODED.
+      //Vector goes straight up.
+      this.vel = new THREE.Vector3(0, randomVel, 0); //velocity
+    }
+    else
+    {
+      //IF FIREWORK EXPLODES.
+      //Randomize the direction of your vectors. So that particles shoot everywhere.
 
-    this.vel = new THREE.Vector3(0, randomVel, 0); //velocity
+      var xDir = Math.floor(Math.random()*2) + 0; // this will get a number between 1 and 99;
+      xDir *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
+
+      var yDir = Math.floor(Math.random()*2) + 0; // this will get a number between 1 and 99;
+      yDir *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
+
+      var zDir = Math.floor(Math.random()*2) + 0; // this will get a number between 1 and 99;
+      zDir *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
+
+      var force = 2; //Balance between Gravity and Velocity. To get the correct effect
+
+      //Plug In New Random Directions to the new Vector3 velocity.
+      this.vel = new THREE.Vector3(xDir * force, yDir * force ,0); //velocity, 2D for now.
+      console.log(xDir, yDir, zDir);
+    }
     this.acc = new THREE.Vector3(0,0,0); //acceleration
+
 
     //DRAWING
     //Draw SphereGeometry
@@ -40,14 +65,10 @@ class Particle
     //Vector addition.
     this.vel.add(this.acc);
     this.mesh.position.add(this.vel); //set new position.
+    this.pos.add(this.vel); //keep track of mesh position.
 
     //Vector multiplication
     this.acc.multiplyScalar(0);
-  }
-
-  getCurrentPos()
-  {
-    return this.mesh.position;
   }
 
   //Deprecated
@@ -83,7 +104,7 @@ class Particle
     }
     else
     {
-      console.log("NULL PARTICLE")
+      //console.log("NULL PARTICLE")
     }
   }
 }
