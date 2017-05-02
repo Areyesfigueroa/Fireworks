@@ -9,11 +9,14 @@ class Particle
     //POSITION, VELOCITY, ACCELERATION
     this.pos = new THREE.Vector3(posX, posY, posZ); //sets origin position
 
-    var randomVel = Math.floor(Math.random() * 10) + 5; //randomize velocity vector.
-    if(firework)
+    //Keep a ref to firework bool to know if the firework exploded.
+    this.firework = firework;
+
+    if(this.firework)
     {
       //IF FIREWORK HAS NOT EXPLODED.
       //Vector goes straight up.
+      var randomVel = Math.floor(Math.random() * 10) + 5; //randomize velocity vector.
       this.vel = new THREE.Vector3(0, randomVel, 0); //velocity
     }
     else
@@ -21,20 +24,21 @@ class Particle
       //IF FIREWORK EXPLODES.
       //Randomize the direction of your vectors. So that particles shoot everywhere.
 
-      var xDir = Math.floor(Math.random()*2) + 0; // this will get a number between 1 and 99;
+      var xDir = Math.floor(Math.random()*2) + 0; // this will get a number between 0 and 1;
       xDir *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
 
-      var yDir = Math.floor(Math.random()*2) + 0; // this will get a number between 1 and 99;
+      var yDir = Math.floor(Math.random()*2) + 0; // this will get a number between 0 and 1;
       yDir *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
 
-      var zDir = Math.floor(Math.random()*2) + 0; // this will get a number between 1 and 99;
+      var zDir = Math.floor(Math.random()*2) + 0; // this will get a number between 0 and 1;
       zDir *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
 
-      var force = 2; //Balance between Gravity and Velocity. To get the correct effect
+      var force = Math.floor(Math.random() * 7) + 1; //Balance between Gravity and Velocity. To get the correct effect
 
       //Plug In New Random Directions to the new Vector3 velocity.
-      this.vel = new THREE.Vector3(xDir * force, yDir * force ,0); //velocity, 2D for now.
-      console.log(xDir, yDir, zDir);
+      this.vel = new THREE.Vector3(xDir, yDir ,0); //velocity, 2D for now.
+      this.vel.multiplyScalar(force);
+      //console.log(xDir, yDir, zDir);
     }
     this.acc = new THREE.Vector3(0,0,0); //acceleration
 
