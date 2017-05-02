@@ -38,8 +38,7 @@ class Firework
     {
       //console.log("Apply New Particle physics");
       //Balance between Gravity and Velocity. To get the correct effect
-      var newGravity = new THREE.Vector3(0,-0.2, 0)
-      this.particles[i].applyForce(newGravity);
+      this.particles[i].applyForce(this.gravity);
       this.particles[i].update();
     }
 

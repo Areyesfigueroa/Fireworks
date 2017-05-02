@@ -12,6 +12,9 @@ class Particle
     //Keep a ref to firework bool to know if the firework exploded.
     this.firework = firework;
 
+    //transparency
+    this.lifespan = 1;
+
     if(this.firework)
     {
       //IF FIREWORK HAS NOT EXPLODED.
@@ -48,12 +51,11 @@ class Particle
     this.geometry = new THREE.SphereGeometry(scaleX, scaleY, scaleZ); //Default
 
     //Create material
-    this.material = new THREE.MeshLambertMaterial({color: 0xF3FFE2});
+    this.material = new THREE.MeshLambertMaterial({color: 0xF3FFE2, transparent: true});
 
     //Create mesh
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z); //set initial position.
-
     //console.log(this.mesh.position);
   }
 
@@ -66,6 +68,12 @@ class Particle
   //update function
   update()
   {
+    //If Not A Seed Firework.
+    if(!this.firework)
+    {
+      this.vel.multiplyScalar(0.85); //Slows down the explosion
+      this.lifespan -= .01; //Start reducing the lifespan of particles.
+    }
     //Vector addition.
     this.vel.add(this.acc);
     this.mesh.position.add(this.vel); //set new position.
@@ -104,6 +112,21 @@ class Particle
   {
     if (this.mesh != null)
     {
+      //If it is not the seed firework
+      if (!this.firework)
+      {
+        //strokeWeight(2);
+        //stroke(255, this.lifespan);
+
+        this.mesh.material.opacity = this.lifespan;
+
+      }
+      else {
+        //strokeWeight(4);
+        //stroke(255);
+        this.mesh.material.opacity = 1;
+      }
+
       scene.add(this.mesh);
     }
     else
