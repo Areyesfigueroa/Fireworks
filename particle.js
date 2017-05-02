@@ -4,7 +4,7 @@ class Particle
   //<Params>Scene</Params> Required
   //<Params>x, y, z</Params> Optional, Vector position of the particle.
   //<Params>scaleX, scaleY, scaleZ</Params> Optional, Size of the particle.
-  constructor(scene, posX = 0, posY = 0, posZ = 0, scaleX = 10, scaleY = 10, scaleZ = 10)
+  constructor(scene, posX = 0, posY = 0, posZ = 0, scaleX = 10, scaleY = 10, scaleZ = 0)
   {
     //Vector3() gets Initialized as (0,0,0)
     this.pos = new THREE.Vector3(posX, posY, posZ); //sets origin position
@@ -25,7 +25,7 @@ class Particle
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(this.pos.x, this.pos.y, this.pos.z); //set initial position.
 
-    console.log(this.mesh.position);
+    //console.log(this.mesh.position);
   }
 
   //force function
@@ -39,12 +39,15 @@ class Particle
   {
     //Vector addition.
     this.vel.add(this.acc);
-    console.log("Position: ", this.mesh.position.add(this.vel)); //set new position.
+    this.mesh.position.add(this.vel); //set new position.
 
     //Vector multiplication
     this.acc.multiplyScalar(0);
-    console.log(this.acc);
+  }
 
+  getCurrentPos()
+  {
+    return this.mesh.position;
   }
 
   //Deprecated
@@ -74,6 +77,13 @@ class Particle
   //Add the object to the scene.
   show()
   {
-    scene.add(this.mesh);
+    if (this.mesh != null)
+    {
+      scene.add(this.mesh);
+    }
+    else
+    {
+      console.log("NULL PARTICLE")
+    }
   }
 }

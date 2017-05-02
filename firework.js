@@ -2,7 +2,7 @@ class Firework
 {
   constructor(scene)
   {
-
+    //Variables
     this.maxWidth = 300;
     this.minWidth = -150; //origin.
     this.height = -300;
@@ -15,13 +15,31 @@ class Firework
 
   update()
   {
-    this.firework.applyForce(this.gravity);
-    this.firework.update();
+    //If it exitst.
+    if(this.firework != null)
+    {
+      this.firework.applyForce(this.gravity);
+      this.firework.update();
+
+      //if the velocity is >= 0 dissapear. TESTING
+      if(this.firework.vel.y <= 0)
+      {
+        this.firework = null;
+      }
+    }
+
   }
 
   show()
   {
-    this.firework.show(); //add to scene
+    if(this.firework != null)
+    {
+      this.firework.show(); //add to scene
+    }
+    else
+    {
+        console.log("NULL FIREWORK")
+    }
   }
 
 }
