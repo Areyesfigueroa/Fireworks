@@ -41,7 +41,6 @@
     //Particles, 2D
     var fireworks = []; //make an array.
 
-
     //Animation
     var deltaTime = 1;
 
@@ -53,11 +52,13 @@
     {
       //RENDERER
       //Renderer Draws onto the canvas.
+      renderer = new THREE.WebGLRenderer({canvas: document.getElementById("myCanvas"), antialias: true, preserveDrawingBuffer: true});
 
       //renderer properties.
       renderer.setClearColor(000000); //Black
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.autoClearColor = false;
 
       //CAMERA
       //params(fieldOfView, aspect ratio, clipping range)
@@ -75,9 +76,19 @@
       pointLight = new THREE.PointLight(0xffffff, 0.5);
       scene.add(pointLight);  //Add point light to the scene.
 
+      //Creates A trail by making the "Canvas" or plane transparent and reduces the opacity.
+      var plane = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshBasicMaterial({transparent: true, opacity: 0.2, color: 000000}));
+      plane.position.z = -10;
+      scene.add(plane);
 
+      /*GEOMETRY TESTING
+      //geometry = new THREE.BoxGeometry(50,50,50);
+      //material = new THREE.MeshLambertMaterial({color: 0xF3FFE2});//params(Object); Object properties must include: {color}
+      //mesh = new THREE.Mesh(geometry, material);
+      //mesh.position.set(0,0,-3000); //Camera and Mesh are on top of each other by default.
       //scene.add(mesh);//Add our mesh to the scene
 
+      //console.log(new Firework().maxWidth);*/
 
       /*REFERENCES
        Method 1:
@@ -122,17 +133,22 @@
 
     function animate()
     {
+
+      //renderer.setClearColor(); //Black
+
       //If Random number between 0 and 1 is < 0.1 -> 5% chance of making a firework.
       if(Math.random() * 1 < 0.04)
       {
         //PARTICLE
         fireworks.push(new Firework()); //Array of particles.
+
       }
 
       for(var i= fireworks.length - 1; i >= 0; i--)
       {
         fireworks[i].update();
         fireworks[i].show();
+
 
         //if firework is done
         if(fireworks[i].done())

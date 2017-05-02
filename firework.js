@@ -3,6 +3,7 @@ class Firework
   constructor(scene)
   {
     //PARTICLE VARIABLES
+    this.color = Math.random() * 0xffffff; //generate random color
     this.explosionAmmount = 30;
     this.maxWidth = 300;
     this.minWidth = -150; //origin.
@@ -15,6 +16,7 @@ class Firework
 
     //PARTICLE
     var randomPosX = Math.floor(Math.random() * this.maxWidth) + this.minWidth;
+    this.firework = new Particle(scene, true, this.color, randomPosX, this.height, -1000);
   }
 
   update()
@@ -71,6 +73,7 @@ class Firework
     for(var i = 0; i < this.explosionAmmount; i++)
     {
       //Create Particle Instance at the current firework position.
+      var p = new Particle(scene, false, this.color, this.firework.pos.x, this.firework.pos.y, this.firework.pos.z);
       this.particles.push(p);
     }
   }
